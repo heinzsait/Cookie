@@ -5,10 +5,17 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Interfaces/ParkourInterface.h"
+#include "GameplayTagContainer.h"
 #include "ParkourMovementComponent.generated.h"
 
 class UCharacterMovementComponent;
 class UCapsuleComponent;
+class UParkourVariablesDataAsset;
+
+namespace EDrawDebugTrace
+{
+	enum Type;
+}
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PARKOURSYSTEM_API UParkourMovementComponent : public UActorComponent, public IParkourInterface
@@ -33,6 +40,47 @@ public:
 	void ParkourAction(bool bAutoClimb);
 
 private:
+
+	void CheckWallShape();
+
+	void ShowHitResults();
+
+	void CheckDistance();
+
+	void ParkourType(const bool bAutoClimb);
+
+	void CheckAndDoHighVault();
+
+	void CheckAndDoLowMantle();
+
+	void CheckAndDoMantle();
+
+	void CheckAndDoVault();
+
+	void CheckAndDoThinVault();
+
+	void SetParkourAction(FGameplayTag NewParkourActionTag);
+
+	void SetParkourState(FGameplayTag NewParkourStateTag);
+
+	bool CheckMantleSurface();
+
+	bool CheckVaultSurface();
+
+	void PlayParkourMontage();
+
+	void ResetParkourResult();
+
+	UFUNCTION()
+	void OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupted);
+
+	FVector FindWarpTargetLocation_1(const float WarpXOffset, const float WarpZOffset);
+
+	FVector FindWarpTargetLocation_2(const float WarpXOffset, const float WarpZOffset);
+
+	FVector FindWarpTargetLocation_3(const float WarpXOffset, const float WarpZOffset);
+
+	void ParkourStateSettings(ECollisionEnabled::Type NewType, EMovementMode NewMovementMode, FRotator RotationRate, bool bDoCollisionTest, bool bStopMovementImmediately);
 
 	ACharacter* PlayerCharacter;
 
@@ -64,4 +112,54 @@ private:
 	float DefaultCameraBoomTargetArmLength;
 
 	FVector DefaultCameraBoomRelativeLocation;
+
+	FGameplayTag ParkourActionTag;
+
+	FGameplayTag ParkourStateTag;
+
+	FGameplayTag MontageBlendOutState;
+
+	bool bCanAutoClimb;
+
+	bool bCanManualClimb = true;
+
+	EDrawDebugTrace::Type DrawDebugType;
+
+	bool bShowHitResults = true;
+
+	FRotator WallRotation;
+
+	FHitResult WallHitResult;
+
+	FHitResult WallTopResult;
+
+	FHitResult WallDepthResult;
+
+	FHitResult WallVaultResult;
+
+	float WallHeight;
+
+	float WallDepth;
+
+	float VaultHeight;
+
+	bool bInGround = true;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* ParkourVariablesDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* VaultDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* ThinVaultDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* HighVaultDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* MantleDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* LowMantleDataAsset;
 };

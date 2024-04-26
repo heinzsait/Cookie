@@ -24,23 +24,33 @@ class PARKOURSYSTEM_API IParkourABPInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual bool SetParkourState(FGameplayTag NewParkourState) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetParkourState(FGameplayTag NewParkourState);
 
-	virtual bool SetParkourAction(FGameplayTag NewParkourAction) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetParkourAction(FGameplayTag NewParkourAction);
 
-	virtual bool SetClimbStyle(FGameplayTag NewClimbStyle) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetClimbStyle(FGameplayTag NewClimbStyle);
 
-	virtual bool SetClimbMovement(FGameplayTag NewDirection) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetClimbMovement(FGameplayTag NewDirection);
 
-	virtual bool SetLeftHandLedgeLocation(FVector LeftHandLedgeLocation) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetLeftHandLedgeLocation(FVector LeftHandLedgeLocation);
 
-	virtual bool SetRightHandLedgeLocation(FVector RightHandLedgeLocation) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetRightHandLedgeLocation(FVector RightHandLedgeLocation);
 
-	virtual bool SetLeftFootLocation(FVector LeftFootLocation) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetLeftFootLocation(FVector LeftFootLocation);
 
-	virtual bool SetRightFootLocation(FVector RightFootLocation) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetRightFootLocation(FVector RightFootLocation);
 
-	virtual bool SetLeftHandLedgeRotation(FRotator LeftHandLedgeRotation) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetLeftHandLedgeRotation(FRotator LeftHandLedgeRotation);
 
-	virtual bool SetRightHandLedgeRotation(FRotator RightHandLedgeRotation) = 0;
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SetRightHandLedgeRotation(FRotator RightHandLedgeRotation);
 };

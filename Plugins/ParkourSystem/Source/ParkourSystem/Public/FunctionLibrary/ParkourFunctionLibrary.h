@@ -12,6 +12,8 @@ UCLASS()
 class PARKOURSYSTEM_API UParkourFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
+public:
 	
 	static FRotator NormalReverseRotationZ(const FVector NormalVector);
 	
