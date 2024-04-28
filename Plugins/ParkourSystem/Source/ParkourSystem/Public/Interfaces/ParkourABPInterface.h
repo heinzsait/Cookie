@@ -4,11 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "GameplayTagContainer.h"
 #include "ParkourABPInterface.generated.h"
 
-struct FGameplayTag;
-
-UINTERFACE(BlueprintType)
+UINTERFACE(Blueprintable)
 class UParkourABPInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -17,6 +16,7 @@ class UParkourABPInterface : public UInterface
 /**
  * 
  */
+
 class PARKOURSYSTEM_API IParkourABPInterface
 {
 	GENERATED_BODY()
@@ -24,33 +24,33 @@ class PARKOURSYSTEM_API IParkourABPInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetParkourState(FGameplayTag NewParkourState);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetParkourAction(FGameplayTag NewParkourAction);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetClimbStyle(FGameplayTag NewClimbStyle);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetClimbMovement(FGameplayTag NewDirection);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetLeftHandLedgeLocation(FVector LeftHandLedgeLocation);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetRightHandLedgeLocation(FVector RightHandLedgeLocation);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetLeftFootLocation(FVector LeftFootLocation);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetRightFootLocation(FVector RightFootLocation);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetLeftHandLedgeRotation(FRotator LeftHandLedgeRotation);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool SetRightHandLedgeRotation(FRotator RightHandLedgeRotation);
 };

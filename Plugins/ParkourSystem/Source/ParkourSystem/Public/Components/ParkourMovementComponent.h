@@ -36,6 +36,8 @@ public:
 
 	virtual bool SetInitializeReference(ACharacter* Character, USpringArmComponent* CameraBoom, UMotionWarpingComponent* MotionWarping, UCameraComponent* Camera) override;
 
+	void AddMovementInput(float ScaleValue, bool bFront);
+
 	UFUNCTION(BlueprintCallable)
 	void ParkourAction(bool bAutoClimb);
 
@@ -49,27 +51,33 @@ private:
 
 	void ParkourType(const bool bAutoClimb);
 
-	void CheckAndDoHighVault();
+	void CheckSurfaceAndSetActionAsHighVault();
 
-	void CheckAndDoLowMantle();
+	void CheckSurfaceAndSetActionAsLowMantle();
 
-	void CheckAndDoMantle();
+	void CheckSurfaceAndSetActionAsMantle();
 
-	void CheckAndDoVault();
+	void CheckSurfaceAndSetActionAsVault();
 
-	void CheckAndDoThinVault();
+	void CheckSurfaceAndSetActionAsThinVault();
 
 	void SetParkourAction(FGameplayTag NewParkourActionTag);
 
 	void SetParkourState(FGameplayTag NewParkourStateTag);
 
+	void SetClimbStyle(FGameplayTag NewClimbStyle);
+
 	bool CheckMantleSurface();
 
 	bool CheckVaultSurface();
 
-	void PlayParkourMontage();
+	bool CheckClimbSurface();
 
-	void ResetParkourResult();
+	void CheckClimbStyle();
+
+	void GetClimbedLedgeHitResult();
+
+	void PlayParkourMontage();
 
 	UFUNCTION()
 	void OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupted);
@@ -80,7 +88,17 @@ private:
 
 	FVector FindWarpTargetLocation_3(const float WarpXOffset, const float WarpZOffset);
 
+	FVector FindWarpTargetLocation_4(const float WarpXOffset, const float WarpZOffset);
+
 	void ParkourStateSettings(ECollisionEnabled::Type NewType, EMovementMode NewMovementMode, FRotator RotationRate, bool bDoCollisionTest, bool bStopMovementImmediately);
+
+	void ResetParkourResult();
+
+public:
+
+	void LimbsClimbIK(bool bFirst, bool bIsLeft);
+
+private:
 
 	ACharacter* PlayerCharacter;
 
@@ -109,6 +127,10 @@ private:
 
 	float CharacterHeightDifference;
 
+	float CharacterHandUpDifference;
+
+	float CharacterHandFrontDifference;
+
 	float DefaultCameraBoomTargetArmLength;
 
 	FVector DefaultCameraBoomRelativeLocation;
@@ -117,13 +139,23 @@ private:
 
 	FGameplayTag ParkourStateTag;
 
+	FGameplayTag ClimbStyleTag;
+
 	FGameplayTag MontageBlendOutState;
 
 	bool bCanAutoClimb;
 
 	bool bCanManualClimb = true;
 
+	bool bFirstClimbMove;
+
+	float ForwardValue;
+
+	float RightValue;
+
 	EDrawDebugTrace::Type DrawDebugType;
+
+	EDrawDebugTrace::Type DrawWallShapeTraceDebugType;
 
 	bool bShowHitResults = true;
 
@@ -136,6 +168,8 @@ private:
 	FHitResult WallDepthResult;
 
 	FHitResult WallVaultResult;
+
+	FHitResult ClimbedLedgeHitResult;
 
 	float WallHeight;
 
@@ -162,4 +196,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
 	UParkourVariablesDataAsset* LowMantleDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* BracedClimbDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* FreeHangClimbDataAsset;
 };
