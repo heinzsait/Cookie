@@ -49,6 +49,8 @@ APlayerCharacter::APlayerCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 700.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->SetRelativeLocation(FVector(0, 0, 70));
+	CameraBoom->SocketOffset = FVector(0, 70, 0);
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -99,6 +101,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &APlayerCharacter::SprintPressed);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintReleased);
+
+		EnhancedInputComponent->BindAction(DropClimbAction, ETriggerEvent::Started, this, &APlayerCharacter::DropClimb);
 	}
 	else
 	{
@@ -167,4 +171,12 @@ void APlayerCharacter::JumpPressed()
 void APlayerCharacter::JumpReleased()
 {
 	
+}
+
+void APlayerCharacter::DropClimb()
+{
+	if (ParkourMovement)
+	{
+		ParkourMovement->ParkourDrop();
+	}
 }

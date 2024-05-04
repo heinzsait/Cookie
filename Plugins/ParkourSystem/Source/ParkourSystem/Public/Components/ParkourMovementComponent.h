@@ -6,16 +6,12 @@
 #include "Components/ActorComponent.h"
 #include "Interfaces/ParkourInterface.h"
 #include "GameplayTagContainer.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "ParkourMovementComponent.generated.h"
 
 class UCharacterMovementComponent;
 class UCapsuleComponent;
 class UParkourVariablesDataAsset;
-
-namespace EDrawDebugTrace
-{
-	enum Type;
-}
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PARKOURSYSTEM_API UParkourMovementComponent : public UActorComponent, public IParkourInterface
@@ -41,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ParkourAction(bool bAutoClimb);
 
+	UFUNCTION(BlueprintCallable)
+	void ParkourDrop();
+
 private:
 
 	void CheckWallShape();
@@ -49,7 +48,11 @@ private:
 
 	void CheckDistance();
 
+	void AutoClimb();
+
 	void ParkourType(const bool bAutoClimb);
+
+	void ClimbSurface();
 
 	void CheckSurfaceAndSetActionAsHighVault();
 
@@ -65,6 +68,8 @@ private:
 
 	void SetParkourState(FGameplayTag NewParkourStateTag);
 
+	void PreviousState(FGameplayTag PreviousParkourStateTag, FGameplayTag NewParkourStateTag);
+
 	void SetClimbStyle(FGameplayTag NewClimbStyle);
 
 	bool CheckMantleSurface();
@@ -75,12 +80,18 @@ private:
 
 	void CheckClimbStyle();
 
+	void CheckClimbOrHop();
+
 	void GetClimbedLedgeHitResult();
+
+	bool CheckAirHang();
 
 	void PlayParkourMontage();
 
 	UFUNCTION()
 	void OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupted);
+
+	float GetMontageStartTime();
 
 	FVector FindWarpTargetLocation_1(const float WarpXOffset, const float WarpZOffset);
 
@@ -90,9 +101,19 @@ private:
 
 	FVector FindWarpTargetLocation_4(const float WarpXOffset, const float WarpZOffset);
 
+	float FirstClimbHeight();
+
 	void ParkourStateSettings(ECollisionEnabled::Type NewType, EMovementMode NewMovementMode, FRotator RotationRate, bool bDoCollisionTest, bool bStopMovementImmediately);
 
 	void ResetParkourResult();
+
+	bool LineTrace(FHitResult& OutHit, const FVector& Start, const FVector& End, EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::None);
+
+	bool SphereTrace(FHitResult& OutHit, const FVector& Start, const FVector& End, const float Radius, EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::None);
+
+	bool CapsuleTrace(FHitResult& OutHit, const FVector& Start, const FVector& End, const float Radius, const float HalfHeight, EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::None);
+
+	bool BoxTrace(FHitResult& OutHit, const FVector& Start, const FVector& End, const FVector& HalfSize, EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::None);
 
 public:
 
@@ -153,8 +174,6 @@ private:
 
 	float RightValue;
 
-	EDrawDebugTrace::Type DrawDebugType;
-
 	EDrawDebugTrace::Type DrawWallShapeTraceDebugType;
 
 	bool bShowHitResults = true;
@@ -202,4 +221,16 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
 	UParkourVariablesDataAsset* FreeHangClimbDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* FreeHangClimbUpDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* BracedClimbUpDataAsset;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* FallingBracedDataAsset;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* FallingFreeHangDataAsset;
 };

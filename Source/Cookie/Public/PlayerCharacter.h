@@ -55,6 +55,9 @@ class COOKIE_API APlayerCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SprintAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* DropClimbAction;
 
 public:
 	// Sets default values for this character's properties
@@ -86,6 +89,8 @@ private:
 	void JumpPressed();
 
 	void JumpReleased();
+
+	void DropClimb();
 
 	UAnimInstance* AnimInstance;
 
