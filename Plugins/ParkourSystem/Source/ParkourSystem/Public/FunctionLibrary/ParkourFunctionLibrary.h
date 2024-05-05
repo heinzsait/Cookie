@@ -19,6 +19,10 @@ public:
 	
 	static FRotator ReverseRotation(const FRotator Rotation);
 
+	static FVector GetForwardVector(FRotator Rotation);
+
+	static FVector GetRightVector(FRotator Rotation);
+
 	static float SelectClimbStyleFloat(const float Braced, const float FreeHang, const FGameplayTag ClimbStyle);
 
 	static float SelectParkourDirectionFloat(const float Forward, const float Backward, const float Left, const float Right, const float ForwardLeft, const float ForwardRight, const float BackwardLeft, const float BackwardRight, const FGameplayTag Direction);

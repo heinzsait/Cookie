@@ -16,6 +16,16 @@ FRotator UParkourFunctionLibrary::ReverseRotation(const FRotator Rotation)
 	return UKismetMathLibrary::NormalizedDeltaRotator(Rotation, FRotator(0, 180, 0));
 }
 
+FVector UParkourFunctionLibrary::GetForwardVector(FRotator Rotation)
+{
+	return FRotationMatrix(Rotation).GetUnitAxis(EAxis::X);
+}
+
+FVector UParkourFunctionLibrary::GetRightVector(FRotator Rotation)
+{
+	return FRotationMatrix(Rotation).GetUnitAxis(EAxis::Y);
+}
+
 float UParkourFunctionLibrary::SelectClimbStyleFloat(const float Braced, const float FreeHang, const FGameplayTag ClimbStyle)
 {
 	FGameplayTag BracedTag = FGameplayTag::RequestGameplayTag(FName("Parkour.ClimbStyle.Braced"));

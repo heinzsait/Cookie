@@ -12,6 +12,7 @@
 class UCharacterMovementComponent;
 class UCapsuleComponent;
 class UParkourVariablesDataAsset;
+class UArrowComponent;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PARKOURSYSTEM_API UParkourMovementComponent : public UActorComponent, public IParkourInterface
@@ -72,6 +73,16 @@ private:
 
 	void SetClimbStyle(FGameplayTag NewClimbStyle);
 
+	void SetClimbDirection(const FGameplayTag NewDirection);
+
+	void ClimbMovement();
+
+	bool CheckClimbMovementSurface(FHitResult HitResult);
+
+	float GetClimbMoveSpeed();
+
+	void StopClimbMovement();
+
 	bool CheckMantleSurface();
 
 	bool CheckVaultSurface();
@@ -103,9 +114,25 @@ private:
 
 	float FirstClimbHeight();
 
+	FRotator GetDesiredRotation();
+
+	FGameplayTag GetDesiredClimbRotation();
+
+	void FindDropDownHangLocation();
+
+	void GetClimbForwardValue(const float ScaleValue, float& HorizontalForwardValue, float& VerticalForwardValue);
+
+	void GetClimbRightValue(const float ScaleValue, float& HorizontalRightValue, float& VerticalRightValue);
+
+	float GetVerticalAxis();
+
+	float GetHorizontalAxis();
+
 	void ParkourStateSettings(ECollisionEnabled::Type NewType, EMovementMode NewMovementMode, FRotator RotationRate, bool bDoCollisionTest, bool bStopMovementImmediately);
 
 	void ResetParkourResult();
+
+	void ResetMovement();
 
 	bool LineTrace(FHitResult& OutHit, const FVector& Start, const FVector& End, EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::None);
 
@@ -142,6 +169,8 @@ private:
 
 	AActor* ArrowActor;
 
+	UArrowComponent* Arrow;
+
 	float ArrowLocationX = 0;
 
 	float ArrowLocationZ = 195.0f;
@@ -164,6 +193,8 @@ private:
 
 	FGameplayTag MontageBlendOutState;
 
+	FGameplayTag ClimbDirectionTag;
+
 	bool bCanAutoClimb;
 
 	bool bCanManualClimb = true;
@@ -173,6 +204,14 @@ private:
 	float ForwardValue;
 
 	float RightValue;
+
+	float HorizontalClimbForwardValue;
+
+	float HorizontalClimbRightValue;
+
+	float VerticalClimbForwardValue;
+
+	float VerticalClimbRightValue;
 
 	EDrawDebugTrace::Type DrawWallShapeTraceDebugType;
 
@@ -197,6 +236,8 @@ private:
 	float VaultHeight;
 
 	bool bInGround = true;
+
+	float ClimbMoveCheckDistance = 10.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
 	UParkourVariablesDataAsset* ParkourVariablesDataAsset;
@@ -233,4 +274,10 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
 	UParkourVariablesDataAsset* FallingFreeHangDataAsset;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* FreeHangDropDownDataAsset;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAssets, meta = (AllowPrivateAccess = "true"))
+	UParkourVariablesDataAsset* DropDownDataAsset;
 };
